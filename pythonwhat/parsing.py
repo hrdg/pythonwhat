@@ -113,6 +113,9 @@ class Parser(ast.NodeVisitor):
     def visit_Expression(self, node):
         self.visit(node.body)
 
+    def visit_Return(self, node):
+        self.visit(node.value)
+
     def generic_visit(self, node):
         """
         This function is called when all other nodes are encountered when traversing the tree.

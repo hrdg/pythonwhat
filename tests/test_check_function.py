@@ -86,7 +86,9 @@ def test_bind_args():
 
     pec = "def my_fun(a, b, *args, **kwargs): pass"
     s = setup_state(pec=pec, stu_code="my_fun(1, 2, 3, 4, c = 5)")
-    args = s._state.ast_dispatcher("function_calls", s._state.student_ast)["my_fun"][0]["args"]
+    args = s._state.ast_dispatcher("function_calls", s._state.student_ast)["my_fun"][0][
+        "args"
+    ]
     sig = signature(s._state.student_process.shell.user_ns["my_fun"])
     binded_args = bind_args(sig, args)
     assert binded_args["a"]["node"].n == 1
@@ -496,3 +498,17 @@ def test_test_function_v2_no_sig():
     s.check_function("numpy.arange", signature=False)
     with pytest.raises(InstructorError):
         s.check_function("numpy.arange")
+
+
+@pytest.mark.parametrize(
+    "sct",
+    [
+        """
+Ex().check_function_def('my_func').check_body().check_function('my_func_in_return', signature=False)
+    """
+    ],
+)
+def test_function_call_in_return(sct):
+    code = "def my_func(a): return my_func_in_return(b)"
+    res = helper.run({"DC_CODE": code, "DC_SOLUTION": code, "DC_SCT": sct})
+    assert res["correct"]
