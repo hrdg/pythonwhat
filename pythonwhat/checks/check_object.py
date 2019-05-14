@@ -161,7 +161,7 @@ def check_object(state, index, missing_msg=None, expand_msg=None, typestr="varia
         state.assert_root("check_object", extra_msg=extra_msg)
 
     if missing_msg is None:
-        missing_msg = "Did you define the {{typestr}} `{{index}}` without errors?"
+        missing_msg = " {{typestr}} `{{index}}` ?"
 
     if expand_msg is None:
         expand_msg = "Did you correctly define the {{typestr}} `{{index}}`? "
